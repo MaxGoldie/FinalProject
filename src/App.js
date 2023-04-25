@@ -1,25 +1,43 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import React from 'react';
+import { useReducer } from "react";
+import { Home } from "./Components/home/home";
+import { WriteReview } from "./Components/writeReview/writeReview"
+
+import { Header } from "./Components/header/header";
+import { HashRouter, Routes, Route } from "react-router-dom";
+import { ReviewContext } from "./Components/state/review/review-context";
+import { ReviewReducer } from "./Components/state/review/review.reducer";
 
 function App() {
+  
+    const [todoState, todoDispatch] = useReducer(ReviewReducer, {
+      todos: [
+        /*  {
+            title: "Buy Milk",
+             isComplete: false,
+          },
+          {
+            title: "Walk Dog",
+            isComplete: true,
+           }, */
+      ],
+    });
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <HashRouter>
+      <Header />
+      <ReviewContext.Provider value={{ todoState, todoDispatch }}>
+        <Routes>
+          {/* http://localhost:3000/#/ */}
+          <Route path="/" element={<Home />} />
+          {/* http://localhost:3000/#/writeReview */}
+          <Route path="/writeReview" element={<WriteReview />} />
+         
+        </Routes>
+        </ReviewContext.Provider>
+    </HashRouter>
   );
 }
 
 export default App;
+ 
