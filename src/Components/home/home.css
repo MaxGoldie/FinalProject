@@ -1,0 +1,19 @@
+.page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    color:blue;
+  }
+
+ 
+    .button {
+      color: blue,
+     
+    }
+    .faded {
+      filter: blur(2px);
+      pointer-events: none;
+      user-select: none;
+    }
+    

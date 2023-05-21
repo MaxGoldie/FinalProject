@@ -2,39 +2,36 @@ import "./App.css";
 import React from 'react';
 import { useReducer } from "react";
 import { Home } from "./Components/home/home";
-import { WriteReview } from "./Components/writeReview/writeReview"
+import { WriteReview } from "./Components/writeReview/writeReview";
+import { MoreInfo } from "./Components/moreInfo/moreInfo";
 
 import { Header } from "./Components/header/header";
 import { HashRouter, Routes, Route } from "react-router-dom";
-import { ReviewContext } from "./Components/state/review/review-context";
-import { ReviewReducer } from "./Components/state/review/review.reducer";
+import { ReviewsContext } from "./Components/state/review/reviews-context";
+import { ReviewsReducer } from "./Components/state/review/reviews.reducer";
+import { Component } from "react";
 
 function App() {
   
-    const [todoState, todoDispatch] = useReducer(ReviewReducer, {
-      todos: [
-        /*  {
-            title: "Buy Milk",
-             isComplete: false,
-          },
-          {
-            title: "Walk Dog",
-            isComplete: true,
-           }, */
+    const [reviewsState, reviewsDispatch] = useReducer(ReviewsReducer, {
+      reviews: [
+        
       ],
     });
   return (
     <HashRouter>
       <Header />
-      <ReviewContext.Provider value={{ todoState, todoDispatch }}>
+      <ReviewsContext.Provider value={{ reviewsState, reviewsDispatch }}>
         <Routes>
           {/* http://localhost:3000/#/ */}
           <Route path="/" element={<Home />} />
-          {/* http://localhost:3000/#/writeReview */}
-          <Route path="/writeReview" element={<WriteReview />} />
+          {/* http://localhost:3000/#/writeReview/{id} */}
+          <Route path="/writeReview/:hotelId" element={<WriteReview />} />
+          {/* http://localhost:3000/#/moreInfo/{id} */}
+          <Route path="/moreInfo/:hotelId" element={<MoreInfo />} />
          
         </Routes>
-        </ReviewContext.Provider>
+        </ReviewsContext.Provider>
     </HashRouter>
   );
 }
