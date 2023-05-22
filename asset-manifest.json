@@ -1,16 +1,16 @@
 {
   "files": {
     "main.css": "/HotelReviews/static/css/main.78c323d5.css",
-    "main.js": "/HotelReviews/static/js/main.42edca93.js",
+    "main.js": "/HotelReviews/static/js/main.fbfe897b.js",
     "static/js/787.0fe84981.chunk.js": "/HotelReviews/static/js/787.0fe84981.chunk.js",
     "static/media/pic.jpg": "/HotelReviews/static/media/pic.66928c45006fbbb9623c.jpg",
     "index.html": "/HotelReviews/index.html",
     "main.78c323d5.css.map": "/HotelReviews/static/css/main.78c323d5.css.map",
-    "main.42edca93.js.map": "/HotelReviews/static/js/main.42edca93.js.map",
+    "main.fbfe897b.js.map": "/HotelReviews/static/js/main.fbfe897b.js.map",
     "787.0fe84981.chunk.js.map": "/HotelReviews/static/js/787.0fe84981.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.78c323d5.css",
-    "static/js/main.42edca93.js"
+    "static/js/main.fbfe897b.js"
   ]
 }
