@@ -2,45 +2,31 @@ import { useState, useEffect, useContext } from "react";
 import * as React from "react";
 import background from "./pic.jpg";
 import Box from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
 import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
-
 import CloseSharpIcon from "@mui/icons-material/CloseSharp";
 import MenuItem from "@mui/material/MenuItem";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
 import "../home/home.css";
 import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
 import Paper from "@mui/material/Paper";
+import { FavoriteStateContext } from "../state/review/FavoriteStateContext";
 import InputBase from "@mui/material/InputBase";
-import Divider from "@mui/material/Divider";
-import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
-import DirectionsIcon from "@mui/icons-material/Directions";
 import StarIcon from "@mui/icons-material/Star";
 import SentimentVeryDissatisfiedIcon from "@mui/icons-material/SentimentVeryDissatisfied";
-import axios from "axios";
-import Popover from "@mui/material/Popover";
 import SentimentSatisfiedAltIcon from "@mui/icons-material/SentimentSatisfiedAlt";
 import Button from "@mui/material/Button";
 import { ReviewsContext } from "../state/review/reviews-context";
-
-import { Grid, Card, CardMedia, CardContent, Typography } from "@mui/material";
+import { Grid, Card, CardContent, Typography } from "@mui/material";
 
 export const Home = () => {
   const [zipCode, setZipCode] = useState("");
   const [hotels, setHotels] = useState([]);
   const [selectedOption, setSelectedOption] = useState("");
   const [selectedState, setSelectedState] = useState("");
-  const [pictures, setPictures] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const { reviewsState, reviewsDispatch } = useContext(ReviewsContext);
   const [hotelId, setHotelId] = useState(null);
-
-  const handleClick1 = () => {
-    setIsOpen(!isOpen);
-  };
 
   useEffect(() => {
     const fetchReviews = async () => {
@@ -78,9 +64,9 @@ export const Home = () => {
       };
       try {
         const response = await fetch(url, options);
-        const result = await response.json(); // Parse the response as JSON
+        const result = await response.json(); 
         console.log(result);
-        setSelectedHotelReviews(result.result); // Access the 'result' property of the response
+        setSelectedHotelReviews(result.result); 
         setSelectedHotel(hotel);
         setIdInput(hotel.hotel_id);
         setPopupOpen(true);
@@ -204,7 +190,6 @@ export const Home = () => {
       console.error(error);
     }
   };
-  const fadedClass = popupOpen ? "faded" : "";
 
   React.useEffect(() => {
     fetchHotels();
@@ -216,9 +201,41 @@ export const Home = () => {
     navigate(`/moreInfo/${idInput}`);
   }
 
-  function setUrlReview() {
-    navigate(`/WriteReview/${idInput}`);
-  }
+  const [favorites, setFavorites] = useState([]);
+ 
+
+  useEffect(() => {
+    console.log(favorites);
+  }, [favorites]);
+
+  const { addFavoriteHotel, favoriteHotels } = useContext(FavoriteStateContext);
+
+  const handleAddFavorite = async (hotel) => {
+    try {
+      const url = `https://booking-com.p.rapidapi.com/v1/hotels/reviews?sort_type=SORT_MOST_RELEVANT&hotel_id=${hotel.hotel_id}&locale=en-gb&language_filter=en-gb`;
+      const options = {
+        method: "GET",
+        headers: {
+          "X-RapidAPI-Key":
+            "0e0602343bmsh79610e03408b8f6p1120dbjsn2457c05436c7",
+          "X-RapidAPI-Host": "booking-com.p.rapidapi.com",
+        },
+      };
+      try {
+        const response = await fetch(url, options);
+        const result = await response.json(); 
+        console.log(result);
+        setSelectedHotelReviews(result.result); 
+
+        addFavoriteHotel(hotel.name);
+      } catch (error) {
+        console.error(error);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <div>
       <div className={popupOpen ? "faded" : ""}>
@@ -236,8 +253,6 @@ export const Home = () => {
             style={{
               display: "flex",
               alignItems: "flex-start",
-              //alignItems: "center",
-              //justifyContent: "center",
             }}
           >
             <Paper
@@ -245,7 +260,6 @@ export const Home = () => {
               sx={{
                 p: "2px 4px",
                 display: "flex",
-                // alignItems: "center",
                 marginTop: "100px",
                 width: 400,
               }}
@@ -315,7 +329,6 @@ export const Home = () => {
                 }}
               >
                 <CardContent style={{ paddingBottom: "40px" }}>
-                  {" "}
                   {/* Add padding */}
                   <Box mt={1} display="flex" alignItems="center">
                     {[...Array(hotel.exact_class)].map((_, index) => (
@@ -334,24 +347,39 @@ export const Home = () => {
                   <Typography variant="body2" color="text.secondary">
                     {hotel.address}
                   </Typography>
-                  <Typography variant="body2" color="text.secondary">
+                  <Typography variant="body2" color="text.secondary"style={{marginBottom: "8px"}}>
                     {hotel.hotel_description}
                   </Typography>
                 </CardContent>
-                <Button
-                  onClick={() => handleCardClick(hotel)}
-                  variant="contained"
-                  color="primary"
-                  style={{
-                    position: "absolute",
-                    bottom: "8px",
-                    right: "8px",
-                    backgroundColor: "#585861",
-                    color: "white",
-                  }}
+                <div
+                  style={{ position: "absolute", bottom: "8px", right: "8px"}}
                 >
-                  Reviews
-                </Button>
+                  <Button
+                    onClick={() => handleAddFavorite(hotel)}
+                    variant="contained"
+                    color="primary"
+                    style={{
+                      backgroundColor: "#585861",
+                      color: "white",
+                      marginTop: "5px",    }}
+                 
+                  >
+                    Add to Favorites
+                  </Button>
+                  <Button
+                    onClick={() => handleCardClick(hotel)}
+                    variant="contained"
+                    color="primary"
+                    style={{
+                      backgroundColor: "#585861",
+                      color: "white",
+                      marginTop: "5px",
+                      marginLeft:"5px" 
+                    }}
+                  >
+                    Reviews
+                  </Button>
+                </div>
               </Card>
             </Grid>
           ))}
@@ -367,11 +395,10 @@ export const Home = () => {
             backgroundColor: "white",
             display: "flex",
             justifyContent: "center",
-            // alignItems: "center",
             width: "80%",
             border: "2px solid black",
             height: "80%",
-            overflow: "auto", // Added overflow for scrolling
+            overflow: "auto", 
           }}
         >
           <div>
@@ -389,19 +416,6 @@ export const Home = () => {
                   }}
                 >
                   More Info
-                </Button>
-
-                <Button
-                  variant="contained"
-                  onClick={setUrlReview}
-                  style={{
-                    marginTop: "10px",
-                    marginLeft: "10px",
-                    backgroundColor: "#585861",
-                    color: "white",
-                  }}
-                >
-                  Write a Review
                 </Button>
               </div>
               <IconButton

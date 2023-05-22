@@ -9,27 +9,20 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
 import MenuItem from "@mui/material/MenuItem";
-import AdbIcon from "@mui/icons-material/Adb";
 import { useNavigate } from "react-router-dom";
 
 const pages = [
   { name: "Home", path: "/" },
-  { name: "WriteReview", path: "/WriteReview" },
+  { name: "My Favorite Hotels", path: "/Favorites" },
 ];
-
 
 export function Header() {
   const navigate = useNavigate();
   const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
-  const handleOpenUserMenu = (event) => {
-    setAnchorElUser(event.currentTarget);
-  };
-
   const handleCloseNavMenu = (page) => {
     setAnchorElNav(null);
     if (page) {
@@ -37,13 +30,9 @@ export function Header() {
     }
   };
 
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
-  };
-
   return (
-    <AppBar position="static"  style={{ background: "gray" }}>
-      <Container maxWidth="xl" >
+    <AppBar position="static" style={{ background: "gray" }}>
+      <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Typography
             variant="h6"
@@ -63,7 +52,7 @@ export function Header() {
             Hotel Reviews
           </Typography>
 
-          <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none"  } }}>
+          <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton
               size="large"
               aria-label="account of current user"
@@ -132,8 +121,6 @@ export function Header() {
               </Button>
             ))}
           </Box>
-
-         
         </Toolbar>
       </Container>
     </AppBar>

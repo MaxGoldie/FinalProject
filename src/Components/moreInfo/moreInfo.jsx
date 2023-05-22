@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import axios from "axios";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
@@ -10,14 +10,10 @@ import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
 
-import { Card, CardMedia, CardContent, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 
 export const MoreInfo = () => {
-  // Get the productId param from the URL.
   const { hotelId } = useParams();
-  // now you can use productId in your API calls :)
-
-  const navigate = useNavigate();
   const [photos, setPhotos] = useState([]);
 
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -41,37 +37,6 @@ export const MoreInfo = () => {
   }));
 
   const [hotelName, setHotelName] = useState("");
-  const [loading, setLoading] = useState(true);
-  /* 
-  useEffect(() => {
-    const fetchName = async () => {
-      try {
-        const response = await axios.get(
-          `https://booking-com.p.rapidapi.com/v1/static/hotels?hotel_id=${hotelId}`,
-          {
-            headers: {
-              'X-RapidAPI-Key': '0e0602343bmsh79610e03408b8f6p1120dbjsn2457c05436c7',
-              'X-RapidAPI-Host': 'booking-com.p.rapidapi.com'
-            },
-          }
-        );
-
-        const hotelData = response.data[0]; // Assuming the hotel data is in an array, extract the first element
-
-        if (hotelData && hotelData.name) {
-          setHotelName([hotelData]);
-        } else {
-          setHotelName([]);
-        }
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setLoading(false); // Set loading to false after the API call is complete
-      }
-    };
-
-    fetchName(); */
-  /*   }, [hotelId]); */
 
   useEffect(() => {
     const fetchData = async () => {
@@ -159,8 +124,6 @@ export const MoreInfo = () => {
         if (response.data !== null) {
           setHighlights(response.data);
         } else {
-          // Handle the case when response.data is null
-          // You can set a default value or show an error message
         }
       } catch (error) {
         console.error(error);
@@ -187,7 +150,7 @@ export const MoreInfo = () => {
     height: "400px",
     marginTop: "20px",
     border: "2px solid black",
-    marginTop:"0px",
+    marginTop: "0px",
   };
 
   return (
@@ -231,53 +194,22 @@ export const MoreInfo = () => {
       </div>
 
       <Box sx={{ flexGrow: 1 }}>
-  <Grid
-    container
-    spacing={1} // Adjust the spacing value here (decrease/increase as desired)
-    columns={{ xs: 4, sm: 8, md: 20 }}
-  >
-    {facilities !== null ? (
-      facilities.map((facility) => (
-        <Grid item xs={2} sm={4} md={4} key={facility.facility_id}>
-          <Item>{facility.facility_name}</Item>
+        <Grid container spacing={1} columns={{ xs: 4, sm: 8, md: 20 }}>
+          {facilities !== null ? (
+            facilities.map((facility) => (
+              <Grid item xs={2} sm={4} md={4} key={facility.facility_id}>
+                <Item style={{ fontWeight: "bold", color: "#62a4de" }}>
+                  {facility.facility_name}
+                </Item>
+              </Grid>
+            ))
+          ) : (
+            <Grid item xs={12}>
+              <p>Loading facilities...</p>
+            </Grid>
+          )}
         </Grid>
-      ))
-    ) : (
-      <Grid item xs={12}>
-        <p>Loading facilities...</p>
-      </Grid>
-    )}
-  </Grid>
-</Box>
-      <div>
-        <div>
-          {/*  <div>
-            <h1>Highlights</h1>
-            <h2>Popular Landmarks</h2>
-            <ul>
-              {highlights.popular_landmarks.map((landmark, index) => (
-                <li key={index}>{landmark}</li>
-              ))}
-            </ul>
-
-            <h2>Restaurants</h2>
-            <ul>
-              {highlights.has_restaurant.map((restaurant, index) => (
-                <li key={index}>{restaurant.name}</li>
-              ))}
-            </ul>
-
-            <h2>Nearby Stations</h2>
-            <ul>
-              {highlights.nearby_stations.map((station, index) => (
-                <li key={index}>
-                  Station Name: {station.station_name}, Station Type:{" "}
-                  {station.station_type}, Distance: {station.distance_localized}
-                </li>
-              ))}
-            </ul> */}
-        </div>
-      </div>
+      </Box>
     </div>
   );
 };
